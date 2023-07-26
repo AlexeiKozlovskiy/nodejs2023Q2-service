@@ -43,6 +43,6 @@ export class AlbumService {
   }
 
   async deleteAlbum(id: string) {
-    await this.DB.deleteUserDB(id);
+    await this.DB.deleteAlbumDB(id);
   }
 }

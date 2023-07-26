@@ -52,7 +52,7 @@ export class UserController {
   @Put(':id')
   async updatePassword(
     @Param('id', new ParseUUIDPipe()) ID: string,
-    @Body(ValidationPipe) updatePasswordDto: UpdatePasswordDto,
+    @Body(ValidationPipe) dto: UpdatePasswordDto,
   ): Promise<UserResp> {
     const user = await this.userService.getUser(ID);
     if (!user) {
@@ -61,16 +61,13 @@ export class UserController {
         HttpStatus.NOT_FOUND,
       );
     }
-    if (user.password !== updatePasswordDto.oldPassword) {
+    if (user.password !== dto.oldPassword) {
       throw new HttpException(
         MessageStatus.USER_PASSWORD_IS_INVALID,
         HttpStatus.FORBIDDEN,
       );
     }
-    const userUpdate = await this.userService.updateUserPassword(
-      user.id,
-      updatePasswordDto,
-    );
+    const userUpdate = await this.userService.updateUserPassword(user.id, dto);
     const { id, login, version, createdAt, updatedAt } = userUpdate;
     return { id, login, version, createdAt, updatedAt };
   }

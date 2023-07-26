@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Artist, Album } from '../types/types';
+import { User, Artist, Album, Track } from '../types/types';
 import { Module, Global } from '@nestjs/common';
 
 @Injectable()
@@ -7,6 +7,7 @@ export class DBService {
   private readonly users: User[] = [];
   private readonly artists: Artist[] = [];
   private readonly albums: Album[] = [];
+  private readonly tracks: Track[] = [];
 
   async getUsersDB(): Promise<User[]> {
     return this.users;
@@ -60,8 +61,8 @@ export class DBService {
     return this.albums.find((el) => el.id === id);
   }
 
-  async createAlbumDB(newAlbum: Album) {
-    this.albums.push(newAlbum);
+  async createAlbumDB(createAlbum: Album) {
+    this.albums.push(createAlbum);
   }
 
   async updateAlbumDB(id: string, updatedAlbum: Album) {
@@ -72,6 +73,29 @@ export class DBService {
   async deleteAlbumDB(id: string) {
     const deleteIndex = this.albums.findIndex((el) => el.id === id);
     this.albums.splice(deleteIndex, 1);
+  }
+
+  async getTracksDB(): Promise<Track[]> {
+    return this.tracks;
+  }
+
+  async getTrackDB(id: string): Promise<Track> {
+    const track = this.tracks.find((el) => el.id === id);
+    return track;
+  }
+
+  async createTrackDB(createTrack: Track) {
+    this.tracks.push(createTrack);
+  }
+
+  async updateTrackDB(id: string, updatedTrack: Track) {
+    const updateIndex = this.tracks.findIndex((el) => el.id === id);
+    this.tracks[updateIndex] = updatedTrack;
+  }
+
+  async deleteTrackDB(id: string) {
+    const deleteIndex = this.tracks.findIndex((el) => el.id === id);
+    this.tracks.splice(deleteIndex, 1);
   }
 }
 

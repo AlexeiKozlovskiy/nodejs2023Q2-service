@@ -49,7 +49,7 @@ export class ArtistController {
   @Put(':id')
   async updateArtist(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body(ValidationPipe) updateArtistDto: UpdateArtistDto,
+    @Body(ValidationPipe) dto: UpdateArtistDto,
   ): Promise<Artist> {
     const artist = await this.artistService.getArtist(id);
     if (!artist) {
@@ -58,12 +58,12 @@ export class ArtistController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return await this.artistService.updateArtist(id, updateArtistDto);
+    return await this.artistService.updateArtist(id, dto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  async delete(@Param('id', new ParseUUIDPipe()) id: string) {
+  async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
     const artist = await this.artistService.getArtist(id);
     if (!artist) {
       throw new HttpException(

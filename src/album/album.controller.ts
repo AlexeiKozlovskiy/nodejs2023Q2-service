@@ -47,7 +47,7 @@ export class AlbumController {
   @Put(':id')
   async updateAlbum(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body(ValidationPipe) updateAlbumDto: UpdateAlbumDto,
+    @Body(ValidationPipe) dto: UpdateAlbumDto,
   ): Promise<Album> {
     const album = await this.albumService.getAlbum(id);
     if (!album) {
@@ -56,7 +56,7 @@ export class AlbumController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return await this.albumService.updateAlbum(id, updateAlbumDto);
+    return await this.albumService.updateAlbum(id, dto);
   }
 
   @Delete(':id')
