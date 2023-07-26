@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User, Artist } from '../types/types';
+import { User, Artist, Album } from '../types/types';
 import { Module, Global } from '@nestjs/common';
 
 @Injectable()
 export class DBService {
   private readonly users: User[] = [];
   private readonly artists: Artist[] = [];
+  private readonly albums: Album[] = [];
 
   async getUsersDB(): Promise<User[]> {
     return this.users;
@@ -47,8 +48,30 @@ export class DBService {
   }
 
   async deleteArtistDB(id: string) {
-    const deleteIndexArtist = this.artists.findIndex((el) => el.id === id);
-    this.artists.splice(deleteIndexArtist, 1);
+    const deleteIndex = this.artists.findIndex((el) => el.id === id);
+    this.artists.splice(deleteIndex, 1);
+  }
+
+  async getAlbumsDB(): Promise<Album[]> {
+    return this.albums;
+  }
+
+  async getAlbumDB(id: string): Promise<Album> {
+    return this.albums.find((el) => el.id === id);
+  }
+
+  async createAlbumDB(newAlbum: Album) {
+    this.albums.push(newAlbum);
+  }
+
+  async updateAlbumDB(id: string, updatedAlbum: Album) {
+    const updateIndex = this.albums.findIndex((el) => el.id === id);
+    this.albums[updateIndex] = updatedAlbum;
+  }
+
+  async deleteAlbumDB(id: string) {
+    const deleteIndex = this.albums.findIndex((el) => el.id === id);
+    this.albums.splice(deleteIndex, 1);
   }
 }
 

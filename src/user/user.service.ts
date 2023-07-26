@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid4 } from 'uuid';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 import { User } from '../types/types';
 import { DBService } from '../db/db';
@@ -17,7 +17,7 @@ export class UserService {
   }
 
   async createUser({ login, password }: CreateUserDto): Promise<User> {
-    const id = uuid();
+    const id = uuid4();
     const version = 1;
     const createdAt = Date.now();
     const updatedAt = Date.now();

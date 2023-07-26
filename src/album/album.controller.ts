@@ -1,0 +1,75 @@
+import {
+  Controller,
+  Get,
+  Put,
+  Param,
+  HttpException,
+  HttpStatus,
+  Post,
+  Body,
+  Delete,
+  HttpCode,
+  ParseUUIDPipe,
+  ValidationPipe,
+} from '@nestjs/common';
+import { Album, MessageStatus } from '../types/types';
+import { AlbumService } from './album.service';
+import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
+
+@Controller('album')
+export class AlbumController {
+  constructor(private albumService: AlbumService) {}
+
+  @Get()
+  async getAllAlbums(): Promise<Album[]> {
+    return await this.albumService.getAlbums();
+  }
+
+  @Get(':id')
+  async getAlbumsById(
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<Album> {
+    const album = await this.albumService.getAlbum(id);
+    if (!album) {
+      throw new HttpException(
+        MessageStatus.ALBUM_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return album;
+  }
+
+  @Post()
+  async createAlbum(@Body(ValidationPipe) dto: CreateAlbumDto): Promise<Album> {
+    return await this.albumService.createAlbum(dto);
+  }
+
+  @Put(':id')
+  async updateAlbum(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body(ValidationPipe) updateAlbumDto: UpdateAlbumDto,
+  ): Promise<Album> {
+    const album = await this.albumService.getAlbum(id);
+    if (!album) {
+      throw new HttpException(
+        MessageStatus.ALBUM_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return await this.albumService.updateAlbum(id, updateAlbumDto);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
+    const album = await this.albumService.getAlbum(id);
+    if (!album) {
+      throw new HttpException(
+        MessageStatus.ALBUM_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    await this.albumService.deleteAlbum(id);
+    return;
+  }
+}

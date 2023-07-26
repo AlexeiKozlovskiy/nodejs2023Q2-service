@@ -39,5 +39,6 @@ export type UserResp = Omit<User, 'password'>;
 export enum MessageStatus {
   USER_NOT_FOUND = 'User not found',
   ARTIST_NOT_FOUND = 'Artist not found',
+  ALBUM_NOT_FOUND = 'Album not found',
   USER_PASSWORD_IS_INVALID = 'User password is invalid',
 }

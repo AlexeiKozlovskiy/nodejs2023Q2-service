@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { DBService } from '../db/db';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid4 } from 'uuid';
 import { Artist } from '../types/types';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class ArtistService {
   }
 
   async createArtist({ name, grammy }: CreateArtistDto): Promise<Artist> {
-    const id = uuid();
+    const id = uuid4();
     const createArtist = {
       id,
       name,
