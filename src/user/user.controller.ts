@@ -12,10 +12,9 @@ import {
   ParseUUIDPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { User, UserResp } from '../types/types';
+import { User, UserResp, MessageStatus } from '../types/types';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
-import { MessageStatus } from '../types/types';
 
 @Controller('user')
 export class UserController {
@@ -23,7 +22,7 @@ export class UserController {
 
   @Get()
   async getAllUsers(): Promise<User[]> {
-    return this.userService.getUsers();
+    return await this.userService.getUsers();
   }
 
   @Get(':id')
@@ -86,7 +85,7 @@ export class UserController {
         HttpStatus.NOT_FOUND,
       );
     }
-    this.userService.deleteUser(user.id);
+    await this.userService.deleteUser(user.id);
     return;
   }
 }

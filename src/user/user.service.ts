@@ -50,6 +50,7 @@ export class UserService {
     await this.DB.updateUserPasswordDB(id, updatedUser);
     return updatedUser;
   }
+
   async deleteUser(id: string) {
     await this.DB.deleteUserDB(id);
   }
