@@ -14,11 +14,15 @@ import {
 } from '@nestjs/common';
 import { Album, MessageStatus } from '../types/types';
 import { AlbumService } from './album.service';
+import { ArtistService } from '../artist/artist.servise';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private albumService: AlbumService) {}
+  constructor(
+    private albumService: AlbumService,
+    private artistService: ArtistService,
+  ) {}
 
   @Get()
   async getAllAlbums(): Promise<Album[]> {
@@ -49,6 +53,16 @@ export class AlbumController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body(ValidationPipe) dto: UpdateAlbumDto,
   ): Promise<Album> {
+    const { artistId } = dto;
+    if (artistId) {
+      const artist = await this.artistService.getArtist(artistId);
+      if (!artist) {
+        throw new HttpException(
+          MessageStatus.ARTIST_NOT_FOUND,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+    }
     const album = await this.albumService.getAlbum(id);
     if (!album) {
       throw new HttpException(

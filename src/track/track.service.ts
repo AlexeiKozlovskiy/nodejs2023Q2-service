@@ -51,5 +51,8 @@ export class TrackService {
 
   async deleteTrack(id: string) {
     await this.DB.deleteTrackDB(id);
+
+    const track = await this.DB.getFavTracksDB();
+    track.includes(id) ? await this.DB.removeTrackFavDB(id) : null;
   }
 }

@@ -40,7 +40,37 @@ export class ArtistService {
     return updatedArtist;
   }
 
-  async deleteArtist(id: string) {
-    await this.DB.deleteArtistDB(id);
+  async deleteArtist(ID: string) {
+    await this.DB.deleteArtistDB(ID);
+
+    const albums = await this.DB.getAlbumsDB();
+    for (const album of albums) {
+      const { id, name, year, artistId } = album;
+      if (artistId === ID) {
+        await this.DB.updateAlbumDB(id, {
+          id,
+          name,
+          year,
+          artistId: null,
+        });
+      }
+    }
+
+    const tracks = await this.DB.getTracksDB();
+    for (const track of tracks) {
+      const { id, name, artistId, albumId, duration } = track;
+      if (artistId === ID) {
+        await this.DB.updateTrackDB(id, {
+          id,
+          name,
+          artistId: null,
+          albumId,
+          duration,
+        });
+      }
+    }
+
+    const artist = await this.DB.getFavArtistsDB();
+    artist.includes(ID) ? await this.DB.removeArtistFavDB(ID) : null;
   }
 }

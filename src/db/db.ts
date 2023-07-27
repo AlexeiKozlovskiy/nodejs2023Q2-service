@@ -19,7 +19,7 @@ export class DBService {
   }
 
   async getUserDB(id: string): Promise<User> {
-    return this.users.find(({ id }) => id);
+    return this.users.find((el) => el.id === id);
   }
 
   async createUserDB(user: User) {
@@ -27,12 +27,12 @@ export class DBService {
   }
 
   async updateUserPasswordDB(id: string, updatedUser: User) {
-    const updateIndex = this.users.findIndex(({ id }) => id);
+    const updateIndex = this.users.findIndex((el) => el.id === id);
     this.users[updateIndex] = updatedUser;
   }
 
   async deleteUserDB(id: string) {
-    const deleteIndex = this.users.findIndex(({ id }) => id);
+    const deleteIndex = this.users.findIndex((el) => el.id === id);
     this.users.splice(deleteIndex, 1);
   }
 

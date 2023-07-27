@@ -42,7 +42,24 @@ export class AlbumService {
     return updatedUser;
   }
 
-  async deleteAlbum(id: string) {
-    await this.DB.deleteAlbumDB(id);
+  async deleteAlbum(ID: string) {
+    await this.DB.deleteAlbumDB(ID);
+
+    const tracks = await this.DB.getTracksDB();
+    for (const track of tracks) {
+      const { id, name, artistId, albumId, duration } = track;
+      if (albumId === ID) {
+        await this.DB.updateTrackDB(id, {
+          id,
+          name,
+          artistId,
+          albumId: null,
+          duration,
+        });
+      }
+    }
+
+    const album = await this.DB.getFavAlbumsDB();
+    album.includes(ID) ? await this.DB.removeAlbumFavDB(ID) : null;
   }
 }
