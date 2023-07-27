@@ -43,3 +43,9 @@ export enum MessageStatus {
   TRACK_NOT_FOUND = 'Track not found',
   USER_PASSWORD_IS_INVALID = 'User password is invalid',
 }
+
+export interface FavoritesRepsonse {
+  artists: Artist[];
+  albums: Album[];
+  tracks: Track[];
+}

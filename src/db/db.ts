@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Artist, Album, Track } from '../types/types';
+import { User, Artist, Album, Track, Favorites } from '../types/types';
 import { Module, Global } from '@nestjs/common';
 
 @Injectable()
@@ -8,6 +8,11 @@ export class DBService {
   private readonly artists: Artist[] = [];
   private readonly albums: Album[] = [];
   private readonly tracks: Track[] = [];
+  private readonly favorites: Favorites = {
+    artists: [],
+    albums: [],
+    tracks: [],
+  };
 
   async getUsersDB(): Promise<User[]> {
     return this.users;
@@ -96,6 +101,49 @@ export class DBService {
   async deleteTrackDB(id: string) {
     const deleteIndex = this.tracks.findIndex((el) => el.id === id);
     this.tracks.splice(deleteIndex, 1);
+  }
+
+  async getFavoritesDB(): Promise<Favorites> {
+    return this.favorites;
+  }
+
+  async getFavTracksDB(): Promise<string[]> {
+    return this.favorites.tracks;
+  }
+
+  async getFavAlbumsDB(): Promise<string[]> {
+    return this.favorites.albums;
+  }
+
+  async getFavArtistsDB(): Promise<string[]> {
+    return this.favorites.artists;
+  }
+
+  async addTrackFavDB(id: string) {
+    this.favorites.tracks.push(id);
+  }
+
+  async removeTrackFavDB(id: string) {
+    const deleteIndex = this.favorites.tracks.findIndex((el) => el === id);
+    this.favorites.tracks.splice(deleteIndex, 1);
+  }
+
+  async addArtistFavDB(id: string) {
+    this.favorites.artists.push(id);
+  }
+
+  async removeArtistFavDB(id: string) {
+    const deleteIndex = this.favorites.artists.findIndex((el) => el === id);
+    this.favorites.artists.splice(deleteIndex, 1);
+  }
+
+  async addAlbumFavDB(id: string) {
+    this.favorites.albums.push(id);
+  }
+
+  async removeAlbumFavDB(id: string) {
+    const deleteIndex = this.favorites.tracks.findIndex((el) => el === id);
+    this.favorites.albums.splice(deleteIndex, 1);
   }
 }
 
