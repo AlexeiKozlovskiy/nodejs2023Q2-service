@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
-import { DBService } from '../db/db';
+import { DBService } from '../db';
 import { v4 as uuid4 } from 'uuid';
-import { Artist } from '../types/types';
+import { Artist } from '../types';
 
 @Injectable()
 export class ArtistService {

@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { ArtistService } from './artist.servise';
-import { Artist, MessageStatus } from '../types/types';
+import { Artist, MessageStatus } from '../types';
 
 @Controller('artist')
 export class ArtistController {
@@ -72,6 +72,5 @@ export class ArtistController {
       );
     }
     await this.artistService.deleteArtist(id);
-    return;
   }
 }

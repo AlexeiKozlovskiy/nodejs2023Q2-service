@@ -12,7 +12,7 @@ import {
   ParseUUIDPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { User, UserResp, MessageStatus } from '../types/types';
+import { User, UserResp, MessageStatus } from '../types';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 

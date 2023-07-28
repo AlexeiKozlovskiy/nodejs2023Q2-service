@@ -12,7 +12,7 @@ import {
   ParseUUIDPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { Album, MessageStatus } from '../types/types';
+import { Album, MessageStatus } from '../types';
 import { AlbumService } from './album.service';
 import { ArtistService } from '../artist/artist.servise';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
@@ -30,7 +30,7 @@ export class AlbumController {
   }
 
   @Get(':id')
-  async getAlbumsById(
+  async getAlbumById(
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Promise<Album> {
     const album = await this.albumService.getAlbum(id);
@@ -84,6 +84,5 @@ export class AlbumController {
       );
     }
     await this.albumService.deleteAlbum(id);
-    return;
   }
 }

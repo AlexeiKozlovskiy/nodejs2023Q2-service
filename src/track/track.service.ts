@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import { CreateTrackDto, UpdateTrackDto } from './track.dto';
-import { Track } from '../types/types';
-import { DBService } from '../db/db';
+import { Track } from '../types';
+import { DBService } from '../db';
 
 @Injectable()
 export class TrackService {

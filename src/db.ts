@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Artist, Album, Track, Favorites } from '../types/types';
+import { User, Artist, Album, Track, Favorites } from './types';
 import { Module, Global } from '@nestjs/common';
 
 @Injectable()

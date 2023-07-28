@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { DBService } from '../db/db';
-import { FavoritesRepsonse } from '../types/types';
+import { DBService } from '../db';
+import { FavoritesResp } from '../types';
 
 @Injectable()
 export class FavouritesService {
   constructor(private DB: DBService) {}
 
-  async getFavorites(): Promise<FavoritesRepsonse> {
+  async getFavorites(): Promise<FavoritesResp> {
     const { artists, albums, tracks } = await this.DB.getFavoritesDB();
     return {
       artists: await Promise.all(artists.map((id) => this.DB.getArtistDB(id))),

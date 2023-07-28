@@ -12,7 +12,7 @@ import {
   ParseUUIDPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { Track, MessageStatus } from '../types/types';
+import { Track, MessageStatus } from '../types';
 import { TrackService } from './track.service';
 import { CreateTrackDto, UpdateTrackDto } from './track.dto';
 
@@ -70,6 +70,5 @@ export class TrackController {
       );
     }
     await this.trackService.deleteTrack(id);
-    return;
   }
 }

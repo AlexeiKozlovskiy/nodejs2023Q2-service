@@ -9,7 +9,7 @@ import {
   HttpCode,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { MessageStatus, FavoritesRepsonse } from '../types/types';
+import { MessageStatus, FavoritesResp } from '../types';
 import { FavouritesService } from './favourites.service';
 import { TrackService } from '../track/track.service';
 import { ArtistService } from '../artist/artist.servise';
@@ -25,7 +25,7 @@ export class FavouritesController {
   ) {}
 
   @Get()
-  async getAllFavorites(): Promise<FavoritesRepsonse> {
+  async getAllFavorites(): Promise<FavoritesResp> {
     return await this.favouritesService.getFavorites();
   }
 

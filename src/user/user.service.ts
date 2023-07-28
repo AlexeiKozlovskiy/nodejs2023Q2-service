@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
-import { User } from '../types/types';
-import { DBService } from '../db/db';
+import { User } from '../types';
+import { DBService } from '../db';
 
 @Injectable()
 export class UserService {
