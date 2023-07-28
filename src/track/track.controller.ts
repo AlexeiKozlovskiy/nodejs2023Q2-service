@@ -26,15 +26,10 @@ export class TrackController {
   }
 
   @Get(':id')
-  async getTrackById(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<Track> {
+  async getTrackById(@Param('id', new ParseUUIDPipe()) id: string): Promise<Track> {
     const track = await this.trackService.getTrack(id);
     if (!track) {
-      throw new HttpException(
-        MessageStatus.TRACK_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return track;
   }
@@ -51,10 +46,7 @@ export class TrackController {
   ): Promise<Track> {
     const track = await this.trackService.getTrack(id);
     if (!track) {
-      throw new HttpException(
-        MessageStatus.TRACK_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return await this.trackService.updateTrack(id, dto);
   }
@@ -64,10 +56,7 @@ export class TrackController {
   async deleteTrack(@Param('id', new ParseUUIDPipe()) id: string) {
     const track = await this.trackService.getTrack(id);
     if (!track) {
-      throw new HttpException(
-        MessageStatus.TRACK_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     await this.trackService.deleteTrack(id);
   }

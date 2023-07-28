@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
-import { Album } from '../types';
+import { Album, FavItem } from '../types';
 import { DBService } from '../db';
 
 @Injectable()
@@ -60,6 +60,6 @@ export class AlbumService {
     }
 
     const album = await this.DB.getFavAlbumsDB();
-    album.includes(ID) ? await this.DB.removeAlbumFavDB(ID) : null;
+    album.includes(ID) ? await this.DB.removeFavItemDB(ID, FavItem.ALBUM) : null;
   }
 }

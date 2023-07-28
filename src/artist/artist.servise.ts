@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
 import { DBService } from '../db';
 import { v4 as uuid4 } from 'uuid';
-import { Artist } from '../types';
+import { Artist, FavItem } from '../types';
 
 @Injectable()
 export class ArtistService {
@@ -71,6 +71,6 @@ export class ArtistService {
     }
 
     const artist = await this.DB.getFavArtistsDB();
-    artist.includes(ID) ? await this.DB.removeArtistFavDB(ID) : null;
+    artist.includes(ID) ? await this.DB.removeFavItemDB(ID, FavItem.ARTIST) : null;
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid4 } from 'uuid';
 import { CreateTrackDto, UpdateTrackDto } from './track.dto';
-import { Track } from '../types';
+import { Track, FavItem } from '../types';
 import { DBService } from '../db';
 
 @Injectable()
@@ -53,6 +53,6 @@ export class TrackService {
     await this.DB.deleteTrackDB(id);
 
     const track = await this.DB.getFavTracksDB();
-    track.includes(id) ? await this.DB.removeTrackFavDB(id) : null;
+    track.includes(id) ? await this.DB.removeFavItemDB(id, FavItem.TRACK) : null;
   }
 }

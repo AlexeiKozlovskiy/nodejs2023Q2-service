@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DBService } from '../db';
-import { FavoritesResp } from '../types';
+import { FavoritesResp, FavItem } from '../types';
 
 @Injectable()
 export class FavouritesService {
@@ -28,26 +28,26 @@ export class FavouritesService {
   }
 
   async addTrackFav(id: string) {
-    await this.DB.addTrackFavDB(id);
+    await this.DB.addFavItemDB(id, FavItem.TRACK);
   }
 
   async removeTrackFav(id: string) {
-    await this.DB.removeTrackFavDB(id);
+    await this.DB.removeFavItemDB(id, FavItem.TRACK);
   }
 
   async addArtistFav(id: string) {
-    await this.DB.addArtistFavDB(id);
+    await this.DB.addFavItemDB(id, FavItem.ARTIST);
   }
 
   async removeArtistFav(id: string) {
-    await this.DB.removeArtistFavDB(id);
+    await this.DB.removeFavItemDB(id, FavItem.ARTIST);
   }
 
   async addAlbumFav(id: string) {
-    await this.DB.addAlbumFavDB(id);
+    await this.DB.addFavItemDB(id, FavItem.ALBUM);
   }
 
   async removeAlbumFavDB(id: string) {
-    await this.DB.removeAlbumFavDB(id);
+    await this.DB.removeFavItemDB(id, FavItem.ALBUM);
   }
 }

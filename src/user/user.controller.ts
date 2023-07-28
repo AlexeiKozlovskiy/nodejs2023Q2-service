@@ -31,19 +31,14 @@ export class UserController {
   ): Promise<UserResp> {
     const getUser = await this.userService.getUser(ID);
     if (!getUser) {
-      throw new HttpException(
-        MessageStatus.USER_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     const { id, login, version, createdAt, updatedAt } = getUser;
     return { id, login, version, createdAt, updatedAt };
   }
 
   @Post()
-  async createUser(
-    @Body(ValidationPipe) dto: CreateUserDto,
-  ): Promise<UserResp> {
+  async createUser(@Body(ValidationPipe) dto: CreateUserDto): Promise<UserResp> {
     const createUser = await this.userService.createUser(dto);
     const { id, login, version, createdAt, updatedAt } = createUser;
     return { id, login, version, createdAt, updatedAt };
@@ -56,10 +51,7 @@ export class UserController {
   ): Promise<UserResp> {
     const user = await this.userService.getUser(ID);
     if (!user) {
-      throw new HttpException(
-        MessageStatus.USER_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     if (user.password !== dto.oldPassword) {
       throw new HttpException(
@@ -77,10 +69,7 @@ export class UserController {
   async deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
     const user = await this.userService.getUser(id);
     if (!user) {
-      throw new HttpException(
-        MessageStatus.USER_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     await this.userService.deleteUser(user.id);
     return;

@@ -30,15 +30,10 @@ export class AlbumController {
   }
 
   @Get(':id')
-  async getAlbumById(
-    @Param('id', new ParseUUIDPipe()) id: string,
-  ): Promise<Album> {
+  async getAlbumById(@Param('id', new ParseUUIDPipe()) id: string): Promise<Album> {
     const album = await this.albumService.getAlbum(id);
     if (!album) {
-      throw new HttpException(
-        MessageStatus.ALBUM_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return album;
   }
@@ -65,10 +60,7 @@ export class AlbumController {
     }
     const album = await this.albumService.getAlbum(id);
     if (!album) {
-      throw new HttpException(
-        MessageStatus.ALBUM_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return await this.albumService.updateAlbum(id, dto);
   }
@@ -78,10 +70,7 @@ export class AlbumController {
   async deleteAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
     const album = await this.albumService.getAlbum(id);
     if (!album) {
-      throw new HttpException(
-        MessageStatus.ALBUM_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     await this.albumService.deleteAlbum(id);
   }

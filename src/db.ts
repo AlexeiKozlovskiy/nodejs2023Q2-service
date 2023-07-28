@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, Artist, Album, Track, Favorites } from './types';
+import { User, Artist, Album, Track, Favorites, FavItem } from './types';
 import { Module, Global } from '@nestjs/common';
 
 @Injectable()
@@ -14,6 +14,18 @@ export class DBService {
     tracks: [],
   };
 
+  // DRY helper methods
+  private updateItemDB<T extends { id: string }>(collection: T[], id: string, updatedItem: T) {
+    const updateIndex = collection.findIndex((el) => el.id === id);
+    collection[updateIndex] = updatedItem;
+  }
+
+  private deleteItemDB<T extends { id: string }>(collection: T[], id: string) {
+    const deleteIndex = collection.findIndex((el) => el.id === id);
+    collection.splice(deleteIndex, 1);
+  }
+
+  // Users
   async getUsersDB(): Promise<User[]> {
     return this.users;
   }
@@ -27,15 +39,14 @@ export class DBService {
   }
 
   async updateUserPasswordDB(id: string, updatedUser: User) {
-    const updateIndex = this.users.findIndex((el) => el.id === id);
-    this.users[updateIndex] = updatedUser;
+    this.updateItemDB(this.users, id, updatedUser);
   }
 
   async deleteUserDB(id: string) {
-    const deleteIndex = this.users.findIndex((el) => el.id === id);
-    this.users.splice(deleteIndex, 1);
+    this.deleteItemDB(this.users, id);
   }
 
+  // Artists
   async getArtistsDB(): Promise<Artist[]> {
     return this.artists;
   }
@@ -49,15 +60,14 @@ export class DBService {
   }
 
   async updateArtistDB(id: string, updatedArtist: Artist) {
-    const updateIndex = this.artists.findIndex((el) => el.id === id);
-    this.artists[updateIndex] = updatedArtist;
+    this.updateItemDB(this.artists, id, updatedArtist);
   }
 
   async deleteArtistDB(id: string) {
-    const deleteIndex = this.artists.findIndex((el) => el.id === id);
-    this.artists.splice(deleteIndex, 1);
+    this.deleteItemDB(this.artists, id);
   }
 
+  // Albums
   async getAlbumsDB(): Promise<Album[]> {
     return this.albums;
   }
@@ -71,15 +81,14 @@ export class DBService {
   }
 
   async updateAlbumDB(id: string, updatedAlbum: Album) {
-    const updateIndex = this.albums.findIndex((el) => el.id === id);
-    this.albums[updateIndex] = updatedAlbum;
+    this.updateItemDB(this.albums, id, updatedAlbum);
   }
 
   async deleteAlbumDB(id: string) {
-    const deleteIndex = this.albums.findIndex((el) => el.id === id);
-    this.albums.splice(deleteIndex, 1);
+    this.deleteItemDB(this.albums, id);
   }
 
+  // Tracks
   async getTracksDB(): Promise<Track[]> {
     return this.tracks;
   }
@@ -94,15 +103,14 @@ export class DBService {
   }
 
   async updateTrackDB(id: string, updatedTrack: Track) {
-    const updateIndex = this.tracks.findIndex((el) => el.id === id);
-    this.tracks[updateIndex] = updatedTrack;
+    this.updateItemDB(this.tracks, id, updatedTrack);
   }
 
   async deleteTrackDB(id: string) {
-    const deleteIndex = this.tracks.findIndex((el) => el.id === id);
-    this.tracks.splice(deleteIndex, 1);
+    this.deleteItemDB(this.tracks, id);
   }
 
+  // Favorites
   async getFavoritesDB(): Promise<Favorites> {
     return this.favorites;
   }
@@ -119,31 +127,14 @@ export class DBService {
     return this.favorites.artists;
   }
 
-  async addTrackFavDB(id: string) {
-    this.favorites.tracks.push(id);
+  // DRY helper Favorites
+  async addFavItemDB(id: string, type: FavItem) {
+    this.favorites[type].push(id);
   }
 
-  async removeTrackFavDB(id: string) {
-    const deleteIndex = this.favorites.tracks.findIndex((el) => el === id);
-    this.favorites.tracks.splice(deleteIndex, 1);
-  }
-
-  async addArtistFavDB(id: string) {
-    this.favorites.artists.push(id);
-  }
-
-  async removeArtistFavDB(id: string) {
-    const deleteIndex = this.favorites.artists.findIndex((el) => el === id);
-    this.favorites.artists.splice(deleteIndex, 1);
-  }
-
-  async addAlbumFavDB(id: string) {
-    this.favorites.albums.push(id);
-  }
-
-  async removeAlbumFavDB(id: string) {
-    const deleteIndex = this.favorites.tracks.findIndex((el) => el === id);
-    this.favorites.albums.splice(deleteIndex, 1);
+  async removeFavItemDB(id: string, type: FavItem) {
+    const deleteIndex = this.favorites[type].findIndex((el) => el === id);
+    this.favorites[type].splice(deleteIndex, 1);
   }
 }
 

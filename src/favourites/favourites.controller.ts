@@ -46,10 +46,7 @@ export class FavouritesController {
   async removeTrack(@Param('id', new ParseUUIDPipe()) id: string) {
     const favTrack = (await this.favouritesService.getFavTracks()).includes(id);
     if (!favTrack) {
-      throw new HttpException(
-        MessageStatus.TRACK_NOT_FOUND,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException(MessageStatus.TRACK_NOT_FOUND, HttpStatus.BAD_REQUEST);
     }
     await this.favouritesService.removeTrackFav(id);
   }
@@ -71,10 +68,7 @@ export class FavouritesController {
   async removeAlbum(@Param('id', new ParseUUIDPipe()) id: string) {
     const favAlbum = (await this.favouritesService.getFavAlbums()).includes(id);
     if (!favAlbum) {
-      throw new HttpException(
-        MessageStatus.ALBUM_NOT_FOUND,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException(MessageStatus.ALBUM_NOT_FOUND, HttpStatus.BAD_REQUEST);
     }
     await this.favouritesService.removeAlbumFavDB(id);
   }
@@ -94,9 +88,7 @@ export class FavouritesController {
   @Delete('artist/:id')
   @HttpCode(204)
   async removeArtist(@Param('id', new ParseUUIDPipe()) id: string) {
-    const favArtist = (await this.favouritesService.getFavArtists()).includes(
-      id,
-    );
+    const favArtist = (await this.favouritesService.getFavArtists()).includes(id);
     if (!favArtist) {
       throw new HttpException(
         MessageStatus.ARTIST_NOT_FOUND,

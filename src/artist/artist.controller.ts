@@ -31,18 +31,13 @@ export class ArtistController {
   ): Promise<Artist> {
     const artist = await this.artistService.getArtist(id);
     if (!artist) {
-      throw new HttpException(
-        MessageStatus.ARTIST_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return artist;
   }
 
   @Post()
-  async createArtist(
-    @Body(ValidationPipe) dto: CreateArtistDto,
-  ): Promise<Artist> {
+  async createArtist(@Body(ValidationPipe) dto: CreateArtistDto): Promise<Artist> {
     return await this.artistService.createArtist(dto);
   }
 
@@ -53,10 +48,7 @@ export class ArtistController {
   ): Promise<Artist> {
     const artist = await this.artistService.getArtist(id);
     if (!artist) {
-      throw new HttpException(
-        MessageStatus.ARTIST_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return await this.artistService.updateArtist(id, dto);
   }
@@ -66,10 +58,7 @@ export class ArtistController {
   async deleteArtist(@Param('id', new ParseUUIDPipe()) id: string) {
     const artist = await this.artistService.getArtist(id);
     if (!artist) {
-      throw new HttpException(
-        MessageStatus.ARTIST_NOT_FOUND,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException(MessageStatus.ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     await this.artistService.deleteArtist(id);
   }
