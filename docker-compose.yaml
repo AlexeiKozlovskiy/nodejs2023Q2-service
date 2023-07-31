@@ -1,12 +1,13 @@
 services:
   api: 
     build:
-      dockerfile: Dockerfile
       context: .
+      dockerfile: Dockerfile
     environment:
       - POSTGRES_HOST=${POSTGRES_HOST}
     volumes:
-      - ./src:/usr/app/src
+      - .:/app
+      - node-modules:/app/node_modules
     ports:
       - ${PORT}:${PORT}
     networks:
@@ -16,8 +17,8 @@ services:
     restart: always
   postgres:
     build:
-      dockerfile: db.Dockerfile
       context: .
+      dockerfile: db.Dockerfile
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -25,14 +26,13 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - pglogs:/var/log/postgresql
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - home-library-service
     restart: always
 volumes:
-  pgdata:
-  pglogs:
+  postgres-data:
+  node-modules:
 networks:
   home-library-service:
     driver: bridge

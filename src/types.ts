@@ -48,10 +48,16 @@ export enum MessageStatus {
   USER_PASSWORD_IS_INVALID = 'User password is invalid',
 }
 
-export type UserResp = Omit<User, 'password'>;
-
 export interface FavoritesResp {
   artists: Artist[];
   albums: Album[];
   tracks: Track[];
+}
+
+export interface UserResp {
+  id: string;
+  login: string;
+  version: number;
+  createdAt: number;
+  updatedAt: number;
 }

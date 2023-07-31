@@ -1,57 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuid4 } from 'uuid';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
-import { User } from '../types';
-import { DBService } from '../db';
+import { PrismaService } from '../prisma/prisma.service';
+import { User } from 'prisma/prisma-client';
 
 @Injectable()
 export class UserService {
-  constructor(private DB: DBService) {}
+  constructor(private prisma: PrismaService) {}
 
   async getUsers(): Promise<User[]> {
-    return await this.DB.getUsersDB();
+    return await this.prisma.user.findMany();
   }
 
   async getUser(id: string): Promise<User> {
-    return await this.DB.getUserDB(id);
+    return await this.prisma.user.findUnique({ where: { id } });
   }
 
   async createUser({ login, password }: CreateUserDto): Promise<User> {
-    const id = uuid4();
-    const version = 1;
-    const createdAt = Date.now();
-    const updatedAt = Date.now();
-    const createUser = {
-      id,
-      login,
-      password,
-      version,
-      createdAt,
-      updatedAt,
-    };
-    await this.DB.createUserDB(createUser);
-    return createUser;
+    return await this.prisma.user.create({
+      data: {
+        login,
+        password,
+        version: 1,
+      },
+    });
   }
 
   async updateUserPassword(
     id: string,
     { newPassword }: UpdatePasswordDto,
   ): Promise<User> {
-    const user = await this.DB.getUserDB(id);
-    const { login, createdAt } = user;
-    const updatedUser: User = {
-      id,
-      login,
-      password: newPassword,
-      version: ++user.version,
-      updatedAt: Date.now(),
-      createdAt,
-    };
-    await this.DB.updateUserPasswordDB(id, updatedUser);
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        password: newPassword,
+        version: ++user.version,
+      },
+    });
     return updatedUser;
   }
 
   async deleteUser(id: string) {
-    await this.DB.deleteUserDB(id);
+    await this.prisma.user.delete({ where: { id } });
   }
 }

@@ -12,9 +12,10 @@ import {
   ParseUUIDPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { User, UserResp, MessageStatus } from '../types';
+import { UserResp, MessageStatus } from '../types';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
+import { User } from 'prisma/prisma-client';
 
 @Controller('user')
 export class UserController {
@@ -34,14 +35,26 @@ export class UserController {
       throw new HttpException(MessageStatus.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     const { id, login, version, createdAt, updatedAt } = getUser;
-    return { id, login, version, createdAt, updatedAt };
+    return {
+      id,
+      login,
+      version,
+      createdAt: createdAt.getTime(),
+      updatedAt: updatedAt.getTime(),
+    };
   }
 
   @Post()
   async createUser(@Body(ValidationPipe) dto: CreateUserDto): Promise<UserResp> {
     const createUser = await this.userService.createUser(dto);
     const { id, login, version, createdAt, updatedAt } = createUser;
-    return { id, login, version, createdAt, updatedAt };
+    return {
+      id,
+      login,
+      version,
+      createdAt: createdAt.getTime(),
+      updatedAt: updatedAt.getTime(),
+    };
   }
 
   @Put(':id')
@@ -61,7 +74,13 @@ export class UserController {
     }
     const userUpdate = await this.userService.updateUserPassword(user.id, dto);
     const { id, login, version, createdAt, updatedAt } = userUpdate;
-    return { id, login, version, createdAt, updatedAt };
+    return {
+      id,
+      login,
+      version,
+      createdAt: createdAt.getTime(),
+      updatedAt: updatedAt.getTime(),
+    };
   }
 
   @Delete(':id')
@@ -72,6 +91,5 @@ export class UserController {
       throw new HttpException(MessageStatus.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     await this.userService.deleteUser(user.id);
-    return;
   }
 }
