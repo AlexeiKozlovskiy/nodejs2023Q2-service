@@ -12,9 +12,10 @@ import {
   ParseUUIDPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { Track, MessageStatus } from '../types';
+import { MessageStatus } from '../types';
 import { TrackService } from './track.service';
 import { CreateTrackDto, UpdateTrackDto } from './track.dto';
+import { Track } from '@prisma/client';
 
 @Controller('track')
 export class TrackController {

@@ -1,53 +1,64 @@
 import { Injectable } from '@nestjs/common';
-import { DBService } from '../db';
-import { FavoritesResp, FavItem } from '../types';
+import { FavoritesResp } from '../types';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FavouritesService {
-  constructor(private DB: DBService) {}
+  constructor(private prisma: PrismaService) {}
 
   async getFavorites(): Promise<FavoritesResp> {
-    const { artists, albums, tracks } = await this.DB.getFavoritesDB();
+    const artists = await this.prisma.artist.findMany();
+    const favArtist = await this.prisma.favouriteArtist.findMany();
+
+    const albums = await this.prisma.album.findMany();
+    const favAlbum = await this.prisma.favouriteAlbum.findMany();
+
+    const tracks = await this.prisma.track.findMany();
+    const favTrack = await this.prisma.favouriteTrack.findMany();
+
     return {
-      artists: await Promise.all(artists.map((id) => this.DB.getArtistDB(id))),
-      albums: await Promise.all(albums.map((id) => this.DB.getAlbumDB(id))),
-      tracks: await Promise.all(tracks.map((id) => this.DB.getTrackDB(id))),
+      artists: favArtist.map((el) => artists.find(({ id }) => id === el.artistId)),
+      albums: favAlbum.map((el) => albums.find(({ id }) => id === el.albumId)),
+      tracks: favTrack.map((el) => tracks.find(({ id }) => id === el.trackId)),
     };
   }
 
   async getFavTracks(): Promise<string[]> {
-    return await this.DB.getFavTracksDB();
+    const result = await this.prisma.favouriteTrack.findMany();
+    return result.map(({ trackId }) => trackId);
   }
 
   async getFavAlbums(): Promise<string[]> {
-    return await this.DB.getFavAlbumsDB();
+    const result = await this.prisma.favouriteAlbum.findMany();
+    return result.map(({ albumId }) => albumId);
   }
 
   async getFavArtists(): Promise<string[]> {
-    return await this.DB.getFavArtistsDB();
+    const result = await this.prisma.favouriteArtist.findMany();
+    return result.map(({ artistId }) => artistId);
   }
 
   async addTrackFav(id: string) {
-    await this.DB.addFavItemDB(id, FavItem.TRACK);
+    await this.prisma.favouriteTrack.create({ data: { trackId: id } });
   }
 
   async removeTrackFav(id: string) {
-    await this.DB.removeFavItemDB(id, FavItem.TRACK);
+    await this.prisma.favouriteTrack.delete({ where: { trackId: id } });
   }
 
   async addArtistFav(id: string) {
-    await this.DB.addFavItemDB(id, FavItem.ARTIST);
+    await this.prisma.favouriteArtist.create({ data: { artistId: id } });
   }
 
   async removeArtistFav(id: string) {
-    await this.DB.removeFavItemDB(id, FavItem.ARTIST);
+    await this.prisma.favouriteArtist.delete({ where: { artistId: id } });
   }
 
   async addAlbumFav(id: string) {
-    await this.DB.addFavItemDB(id, FavItem.ALBUM);
+    await this.prisma.favouriteAlbum.create({ data: { albumId: id } });
   }
 
   async removeAlbumFavDB(id: string) {
-    await this.DB.removeFavItemDB(id, FavItem.ALBUM);
+    await this.prisma.favouriteAlbum.delete({ where: { albumId: id } });
   }
 }

@@ -12,7 +12,8 @@ import {
   ParseUUIDPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { Album, MessageStatus } from '../types';
+import { MessageStatus } from '../types';
+import { Album } from '@prisma/client';
 import { AlbumService } from './album.service';
 import { ArtistService } from '../artist/artist.servise';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
