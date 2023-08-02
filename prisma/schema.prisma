@@ -54,7 +54,7 @@ model Album {
 
 model FavouriteAlbum {
   id      Int         @id @default(autoincrement())
-  albumId String.     @unique
+  albumId String      @unique
   album   Album       @relation(fields: [albumId], references: [id])
 
   @@map("favouriteAlbum")
