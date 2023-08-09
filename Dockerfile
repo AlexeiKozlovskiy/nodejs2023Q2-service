@@ -6,5 +6,5 @@ COPY . .
 FROM node:18-alpine as production
 WORKDIR /app
 COPY --from=build /app /app
-CMD ["npm", "run", "start:dev"]
 EXPOSE ${PORT}
+CMD npx prisma migrate dev && npm run start:dev
