@@ -26,10 +26,6 @@ npm install
 ## Running application
 
 ```
-rename .env.example to .env
-```
-
-```
 docker-compose up
 ```
 
