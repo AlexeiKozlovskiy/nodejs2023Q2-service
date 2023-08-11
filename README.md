@@ -43,6 +43,12 @@ Check eslint
 npm run lint
 ```
 
+## Vulnerabilities scanning
+
+```
+npm run scan
+```
+
 ## Implemented routes
 
  * `Users` (`/user` route)
