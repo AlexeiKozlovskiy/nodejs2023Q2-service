@@ -26,7 +26,7 @@ npm install
 ## Running application
 
 ```
-docker-compose up
+docker compose up
 ```
 
 ## Testing
